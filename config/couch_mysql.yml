@@ -1,0 +1,12 @@
+couchdb:
+  database: db_name
+  username: user
+  password: your_password
+  host: localhost
+  port: 5984
+mysql:
+  database: db_name
+  username: user
+  password: your_password
+  host: localhost
+  port: 3306
