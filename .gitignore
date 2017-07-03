@@ -20,3 +20,5 @@
 # Ignore Byebug command history file.
 .byebug_history
 Gemfile.lock
+nbproject
+config/couch_mysql.yml
