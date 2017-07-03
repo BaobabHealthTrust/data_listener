@@ -1,1 +1,1 @@
-CONNECTION = YAML.load_file(Rails.root.join('config', 'couchdb_mysql.yml'))[Rails.env]
+#CONNECTION = YAML.load_file(Rails.root.join('config', 'couchdb_mysql.yml'))[Rails.env]

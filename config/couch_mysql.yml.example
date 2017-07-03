@@ -5,6 +5,7 @@ couchdb:
   host: localhost
   port: 5984
 mysql:
+  adapter: mysql2
   database: db_name
   username: user
   password: your_password
