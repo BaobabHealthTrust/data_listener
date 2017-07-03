@@ -22,13 +22,33 @@ mysql_db = mysql_db_settings["database"]
 mysql_port = mysql_db_settings["port"]
 mysql_adapter = mysql_db_settings["adapter"]
 
-raise couch_host.inspect
+#reading db_mapping
+db_map_path = DIR.to_s + "/config/db_mapping.yml"
+db_maps = YAML.load_file(db_map_path)
+
 changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/#{couch_db}" do
   # Which database should we connect to?
   database "#{mysql_adapter}://#{mysql_username}:#{mysql_password}@#{mysql_host}:#{mysql_port}/#{mysql_db}"
 
-	  document 'type' => 'User' do
-	    table :user
-	  end
+  	 map_keys = db_maps.keys
+
+  	 map_keys.each do |map|
+
+  	 	  map_parts = map.split("|")
+  	 	  document_type = map_parts [0]
+  	 	  db_table = map_parts[1]
+
+  	 	  couch_db_fields = db_maps[map].keys
+
+		  document 'type' => document_type do
+
+			    eval("table :#{db_table}") do
+			    	
+			    	couch_db_fields.each do |field|
+			    		eval("column :#{field},#{db_maps[map][field]}")
+			    	end
+			    end
+		  end
+	 end
 
 end

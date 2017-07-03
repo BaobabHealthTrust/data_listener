@@ -1,0 +1,4 @@
+Documet_Type|table_name:
+    _id: table_id  
+    couch_fiel1: table_field1
+    couch_fiel2: table_field2
