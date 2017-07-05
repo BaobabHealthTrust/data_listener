@@ -1,0 +1,12 @@
+connection1:
+  Documet_Type|table_name:
+      _id: table_id  
+      couch_fiel1: table_field1
+      couch_fiel2: table_field2
+  Documet_Type2|table_name2:
+      _id: table_id :
+        _id: nationality_id     
+connection2:
+  Documet_Type2|table_name2:
+      _id: table_id :
+        _id: nationality_id  

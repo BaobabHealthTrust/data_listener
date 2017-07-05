@@ -23,3 +23,5 @@ Gemfile.lock
 nbproject
 config/couch_mysql.yml
 config/db_mapping.yml
+config/multiple_connection.yml
+config/db_mapping_multiple.yml

@@ -1,0 +1,28 @@
+connection1:
+  couchdb:
+    database: db_name
+    username: user
+    password: your_password
+    host: localhost
+    port: 5984
+  mysql:
+    adapter: mysql2
+    database: db_name
+    username: user
+    password: your_password
+    host: localhost
+    port: 3306
+connection2:
+  couchdb:
+    database: db_name
+    username: user
+    password: your_password
+    host: localhost
+    port: 5984
+  mysql:
+    adapter: mysql2
+    database: db_name
+    username: user
+    password: your_password
+    host: localhost
+    port: 3306

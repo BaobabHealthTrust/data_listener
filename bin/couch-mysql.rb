@@ -7,6 +7,7 @@ DIR = File.dirname(__FILE__)
 
 couch_mysql_path = DIR.to_s + "/config/couch_mysql.yml"
 db_settings = YAML.load_file(couch_mysql_path)
+
 couch_db_settings = db_settings["couchdb"]
 couch_username = couch_db_settings["username"]
 couch_password = couch_db_settings["password"]
@@ -45,7 +46,7 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
 			    eval("table :#{db_table}") do
 			    	
 			    	couch_db_fields.each do |field|
-			    		eval("column :#{field},#{db_maps[map][field]}")
+			    		eval("column :#{field},:#{db_maps[map][field]}")
 			    	end
 			    end
 		  end
