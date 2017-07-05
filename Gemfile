@@ -31,6 +31,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'couchrest_model'
 
 gem 'couch_tap'
+gem 'mysql2'
+gem 'passenger'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
