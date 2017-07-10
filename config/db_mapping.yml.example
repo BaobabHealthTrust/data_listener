@@ -1,6 +1,32 @@
-Documet_Type|table_name:
-    _id: table_id  
-    couch_fiel1: table_field1
-    couch_fiel2: table_field2
-Documet_Type2|table_name2:
-    _id: table_id 
+BirthRegistrationTypeCouchdb|birth_registration_type:
+    birth_registration_type_id: birth_registration_type_id
+
+LevelOfEducationCouchdb|level_of_education:
+    level_of_education_id: level_of_education_id
+
+LocationCouchdb|location:
+    location_id: location_id
+
+LocationTagCouchdb|location_tag:
+    location_tag_id: location_tag_id
+
+LocationTagMapCouchdb|location_tag_map:
+    location_id: location_id
+
+ModeOfDeliveryCouchdb|mode_of_delivery:
+    mode_of_delivery_id: mode_of_delivery_id
+
+PersonAttributeTypesCouchdb|person_attribute_types:
+    person_attribute_type_id: person_attribute_type_id
+
+PersonRelationshipTypesCouchdb|person_relationship:
+    person_relationship_type_id: person_relationship_id
+
+PersonTypeCouchdb|person_type:
+    person_type_id: person_type_id
+
+PersonTypeOfBirthsCouchdb|person_type:
+    person_type_of_birth_id: person_type_of_birth_id
+
+StatusCouchdb|statuses:
+    status_id: status_id
