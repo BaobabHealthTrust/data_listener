@@ -68,12 +68,11 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
 
     mysql_birth_registration_type_record = client.query("SELECT * FROM birth_registration_type WHERE birth_registration_type_id = '#{birth_registration_type_id}' LIMIT 1").each(:as => :hash)
-
     if mysql_birth_registration_type_record.blank?
       insert_birth_registration_type_statement = "INSERT INTO birth_registration_type (birth_registration_type_id, name, created_at, updated_at) VALUES ('#{birth_registration_type_id}', '#{name}', '#{created_at}', '#{updated_at}')"
       client.query(insert_birth_registration_type_statement)
     else
-      update_birth_registration_type_statement = "UPDATE birth_registration_type SET name = '#{name}', updated_at = #{updated_at} WHERE birth_registration_type_id = '#{birth_registration_type_id}'"
+      update_birth_registration_type_statement = "UPDATE birth_registration_type SET name = '#{name}', updated_at = '#{updated_at}' WHERE birth_registration_type_id = '#{birth_registration_type_id}'"
       client.query(update_birth_registration_type_statement)
     end
   end
@@ -109,11 +108,11 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
 
     mysql_person_type_record = client.query("SELECT * FROM person_type WHERE person_type_id = '#{person_type_id}' LIMIT 1").each(:as => :hash)
     if mysql_person_type_record.blank?
-      insert_person_type_statement = "INSERT INTO person_type (person_type_id, name, description, created_at, updated_at) VALUES ('#{person_type_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
+      insert_person_type_statement = "INSERT INTO person_type (person_type_id, name, description) VALUES ('#{person_type_id}', '#{name}', '#{description}')"
       client.query(insert_person_type_statement)
 
     else
-      update_person_type_statement = "UPDATE person_type SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE person_type_id = '#{person_type_id}'"
+      update_person_type_statement = "UPDATE person_type SET name = '#{name}', description = '#{description}' WHERE person_type_id = '#{person_type_id}'"
       client.query(update_person_type_statement)
     end
   end
@@ -129,11 +128,11 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
 
     mysql_person_relationship_type_record = client.query("SELECT * FROM person_relationship_types WHERE person_relationship_type_id = '#{person_relationship_type_id}' LIMIT 1").each(:as => :hash)
     if mysql_person_relationship_type_record.blank?
-      insert_person_relationship_type_statement = "INSERT INTO person_relationship_types (person_relationship_type_id, name, description, created_at, updated_at) VALUES ('#{person_relationship_type_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
+      insert_person_relationship_type_statement = "INSERT INTO person_relationship_types (person_relationship_type_id, name, description) VALUES ('#{person_relationship_type_id}', '#{name}', '#{description}')"
       client.query(insert_person_relationship_type_statement)
 
     else
-      update_person_relationship_type_statement = "UPDATE person_relationship_types SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE person_relationship_type_id = '#{person_relationship_type_id}'"
+      update_person_relationship_type_statement = "UPDATE person_relationship_types SET name = '#{name}', description = '#{description}' WHERE person_relationship_type_id = '#{person_relationship_type_id}'"
       client.query(update_person_relationship_type_statement)
     end
   end
@@ -187,11 +186,11 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     mysql_location_tag_map_record = client.query("SELECT * FROM location_tag_map WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
     if mysql_location_tag_map_record.blank?
       insert_location_tag_map_statement = "INSERT INTO location_tag_map (location_id, location_tag_id) VALUES ('#{location_id}', '#{location_tag_id}')"
-      client.query(insert_location_tag_map_statement)
+      #client.query(insert_location_tag_map_statement)
 
     else
       update_location_tag_map_statement = "UPDATE location_tag_map SET location_id = '#{location_id}', location_tag_id = '#{location_tag_id}' WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}'"
-      client.query(update_location_tag_map_statement)
+      #client.query(update_location_tag_map_statement)
     end
   end
 
@@ -207,11 +206,11 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     mysql_location_tag_record = client.query("SELECT * FROM location_tag WHERE location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
     if mysql_location_tag_record.blank?
       insert_location_tag_statement = "INSERT INTO location_tag (location_tag_id, name, description, created_at, updated_at) VALUES ('#{location_tag_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
-      client.query(insert_location_tag_statement)
+      #client.query(insert_location_tag_statement)
 
     else
       update_location_tag_statement = "UPDATE location_tag SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE location_tag_id = '#{location_tag_id}'"
-      client.query(update_location_tag_statement)
+      #client.query(update_location_tag_statement)
     end
   end
 
@@ -220,6 +219,7 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     #doc_id = doc.document["_id"]
     location_id = doc.document["location_id"]
     name = doc.document["name"]
+    name = name.gsub(/\\/, '\&\&').gsub(/'/, "''") #Escaping special characters. Copied from https://stackoverflow.com/questions/11581773/how-to-escape-for-mysql-queries-from-ruby-on-rails
     description = doc.document["description"]
     postal_code = doc.document["postal_code"]
     country = doc.document["country"]
@@ -229,18 +229,39 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     parent_location = doc.document["parent_location"]
     updated_at = doc.document["updated_at"].to_date rescue doc.document["updated_at"]
     created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
+    uuid = client.query("SELECT UUID() as uuid;").each(:as => :hash).last["uuid"]
 
     mysql_location_record = client.query("SELECT * FROM location WHERE location_id = '#{location_id}' LIMIT 1").each(:as => :hash)
     if mysql_location_record.blank?
-      insert_location_statement = "INSERT INTO location (location_id, name, description, postal_code, country, latitude, longitude, county_district, parent_location, updated_at, created_at)
-VALUES ('#{location_id}', '#{name}', '#{description}', '#{postal_code}', '#{country}', '#{latitude}', '#{longitude}', '#{county_district}', '#{parent_location}', '#{updated_at}', '#{created_at}')"
+      insert_location_statement = "INSERT INTO location (location_id, name, description, postal_code, country, latitude, longitude, county_district, parent_location, uuid, created_at)
+VALUES ('#{location_id}', '#{name}', '#{description}', '#{postal_code}', '#{country}', '#{latitude}', '#{longitude}', '#{county_district}', '#{parent_location}', '#{uuid}', '#{created_at}')"
       client.query(insert_location_statement)
 
     else
       update_location_statement = "UPDATE location SET name = '#{name}', description = '#{description}', postal_code = '#{postal_code}', 
           country = '#{country}', latitude = '#{latitude}', longitude = '#{longitude}', county_district='#{county_district}',
-          parent_location = '#{parent_location}', updated_at = '#{updated_at}' WHERE location_id = '#{location_id}'"
+          parent_location = '#{parent_location}', changed_at = '#{updated_at}' WHERE location_id = '#{location_id}'"
       client.query(update_location_statement)
+    end  unless location_id.blank?
+  end
+
+  #LevelOfEducationCouchdb Document Type
+  document 'type' => "LevelOfEducationCouchdb" do |doc|
+    #doc_id = doc.document["_id"]
+    level_of_education_id = doc.document["level_of_education_id"]
+    name = doc.document["name"]
+    description = doc.document["description"]
+    updated_at = doc.document["updated_at"].to_date rescue doc.document["updated_at"]
+    created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
+
+    mysql_level_of_education_record = client.query("SELECT * FROM level_of_education WHERE level_of_education_id = '#{level_of_education_id}' LIMIT 1").each(:as => :hash)
+    if mysql_level_of_education_record.blank?
+      insert_level_of_education_statement = "INSERT INTO level_of_education (level_of_education_id, name, description, created_at, updated_at) VALUES ('#{level_of_education_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
+      client.query(insert_level_of_education_statement)
+
+    else
+      update_level_of_education_statement = "UPDATE level_of_education SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE level_of_education_id = '#{level_of_education_id}'"
+      client.query(update_level_of_education_statement)
     end
   end
 
