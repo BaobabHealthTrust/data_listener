@@ -177,43 +177,6 @@ changes "http://#{couch_username}:#{couch_password}@#{couch_host}:#{couch_port}/
     end
   end
 
-  #LocationTagMapCouchdb Document Type
-  document 'type' => "LocationTagMapCouchdb" do |doc|
-    #doc_id = doc.document["_id"]
-    location_id = doc.document["location_id"]
-    location_tag_id = doc.document["location_tag_id"]
-
-    mysql_location_tag_map_record = client.query("SELECT * FROM location_tag_map WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
-    if mysql_location_tag_map_record.blank?
-      insert_location_tag_map_statement = "INSERT INTO location_tag_map (location_id, location_tag_id) VALUES ('#{location_id}', '#{location_tag_id}')"
-      #client.query(insert_location_tag_map_statement)
-
-    else
-      update_location_tag_map_statement = "UPDATE location_tag_map SET location_id = '#{location_id}', location_tag_id = '#{location_tag_id}' WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}'"
-      #client.query(update_location_tag_map_statement)
-    end
-  end
-
-  #LocationTagCouchdb Document Type
-  document 'type' => "LocationTagCouchdb" do |doc|
-    #doc_id = doc.document["_id"]
-    location_tag_id = doc.document["location_tag_id"]
-    name = doc.document["name"]
-    description = doc.document["description"]
-    updated_at = doc.document["updated_at"].to_date rescue doc.document["updated_at"]
-    created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
-
-    mysql_location_tag_record = client.query("SELECT * FROM location_tag WHERE location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
-    if mysql_location_tag_record.blank?
-      insert_location_tag_statement = "INSERT INTO location_tag (location_tag_id, name, description, created_at, updated_at) VALUES ('#{location_tag_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
-      #client.query(insert_location_tag_statement)
-
-    else
-      update_location_tag_statement = "UPDATE location_tag SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE location_tag_id = '#{location_tag_id}'"
-      #client.query(update_location_tag_statement)
-    end
-  end
-
   #LocationCouchdb Document Type
   document 'type' => "LocationCouchdb" do |doc|
     #doc_id = doc.document["_id"]
@@ -245,6 +208,43 @@ VALUES ('#{location_id}', '#{name}', '#{description}', '#{postal_code}', '#{coun
     end  unless location_id.blank?
   end
 
+  #LocationTagMapCouchdb Document Type
+  document 'type' => "LocationTagMapCouchdb" do |doc|
+    #doc_id = doc.document["_id"]
+    location_id = doc.document["location_id"]
+    location_tag_id = doc.document["location_tag_id"]
+
+    mysql_location_tag_map_record = client.query("SELECT * FROM location_tag_map WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
+    if mysql_location_tag_map_record.blank?
+      insert_location_tag_map_statement = "INSERT INTO location_tag_map (location_id, location_tag_id) VALUES ('#{location_id}', '#{location_tag_id}')"
+      client.query(insert_location_tag_map_statement)
+
+    else
+      update_location_tag_map_statement = "UPDATE location_tag_map SET location_id = '#{location_id}', location_tag_id = '#{location_tag_id}' WHERE location_id = '#{location_id}' AND location_tag_id = '#{location_tag_id}'"
+      client.query(update_location_tag_map_statement)
+    end
+  end
+
+  #LocationTagCouchdb Document Type
+  document 'type' => "LocationTagCouchdb" do |doc|
+    #doc_id = doc.document["_id"]
+    location_tag_id = doc.document["location_tag_id"]
+    name = doc.document["name"]
+    description = doc.document["description"]
+    updated_at = doc.document["updated_at"].to_date rescue doc.document["updated_at"]
+    created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
+
+    mysql_location_tag_record = client.query("SELECT * FROM location_tag WHERE location_tag_id = '#{location_tag_id}' LIMIT 1").each(:as => :hash)
+    if mysql_location_tag_record.blank?
+      insert_location_tag_statement = "INSERT INTO location_tag (location_tag_id, name, description, created_at, updated_at) VALUES ('#{location_tag_id}', '#{name}', '#{description}', '#{created_at}', '#{updated_at}')"
+      client.query(insert_location_tag_statement)
+
+    else
+      update_location_tag_statement = "UPDATE location_tag SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE location_tag_id = '#{location_tag_id}'"
+      client.query(update_location_tag_statement)
+    end
+  end
+  
   #LevelOfEducationCouchdb Document Type
   document 'type' => "LevelOfEducationCouchdb" do |doc|
     #doc_id = doc.document["_id"]
@@ -262,6 +262,91 @@ VALUES ('#{location_id}', '#{name}', '#{description}', '#{postal_code}', '#{coun
     else
       update_level_of_education_statement = "UPDATE level_of_education SET name = '#{name}', description = '#{description}', updated_at = '#{updated_at}' WHERE level_of_education_id = '#{level_of_education_id}'"
       client.query(update_level_of_education_statement)
+    end
+  end
+
+  #PersonBirthDetailsCouchdb Document Type
+  document 'type' => "PersonBirthDetailsCouchdb" do |doc|
+    document_id = doc.document["_id"]
+    person_birth_details_id = doc.document["person_birth_details_id"]
+    first_name = doc.document["first_name"]
+    middle_name = doc.document["middle_name"]
+    last_name = doc.document["last_name"]
+    gender = doc.document["gender"]
+    birthdate = doc.document["gender"]
+    birthdate_estimated = doc.document["birthdate_estimated"]
+    place_of_birth = doc.document["place_of_birth"]
+    birth_location_id = doc.document["birth_location_id"]
+    other_birth_location = doc.document["other_birth_location"]
+    birth_weight = doc.document["birth_weight"]
+    type_of_birth = doc.document["type_of_birth"]
+    parents_married_to_each_other = doc.document["parents_married_to_each_other"]
+    date_of_marriage = doc.document["date_of_marriage"]
+    gestation_at_birth = doc.document["gestation_at_birth"]
+    number_of_prenatal_visits = doc.document["number_of_prenatal_visits"]
+    month_prenatal_care_started = doc.document["month_prenatal_care_started"]
+    mode_of_delivery_id = doc.document["mode_of_delivery_id"]
+    number_of_children_born_alive_inclusive = doc.document["number_of_children_born_alive_inclusive"]
+    number_of_children_born_still_alive = doc.document["number_of_children_born_still_alive"]
+    level_of_education_id = doc.document["level_of_education_id"]
+    district_id_number = doc.document["district_id_number"]
+    national_serial_number = doc.document["national_serial_number"]
+    court_order_attached = doc.document["court_order_attached"]
+    acknowledgement_of_receipt_date = doc.document["acknowledgement_of_receipt_date"]
+    facility_serial_number = doc.document["facility_serial_number"]
+    adoption_court_order = doc.document["adoption_court_order"]
+    birth_registration_type_id = doc.document["birth_registration_type_id"]
+    
+    location_created_at = doc.document["location_created_at"]
+    old_district_id_number = doc.document["old_district_id_number"]
+    old_national_serial_number = doc.document["old_national_serial_number"]
+    nrb_national_id = doc.document["nrb_national_id"]
+    patient_national_id = doc.document["patient_national_id"]
+    person_home_village_id = doc.document["person_home_village_id"]
+    person_current_village_id  = doc.document["person_current_village_id"]
+    person_address_one = doc.document["person_address_one"]
+    person_address_two = doc.document["person_address_two"]
+    mother_first_name = doc.document["mother_first_name"]
+    mother_middle_name = doc.document["mother_middle_name"]
+    mother_last_name = doc.document["mother_last_name"]
+    mother_home_village_id = doc.document["mother_home_village_id"]
+    mother_current_village_id = doc.document["mother_current_village_id"]
+    mother_address_one  = doc.document["mother_address_one"]
+    mother_address_two = doc.document["mother_address_two"]
+    father_first_name = doc.document["father_first_name"]
+    father_middle_name = doc.document["father_middle_name"]
+    father_last_name = doc.document["father_last_name"]
+    father_home_village_id = doc.document["father_home_village_id"]
+    father_current_village_id = doc.document["father_current_village_id"]
+    father_address_one = doc.document["father_address_one"]
+    father_address_two = doc.document["father_address_two"]
+    informant_first_name = doc.document["informant_first_name"]
+    informant_middle_name = doc.document["informant_middle_name"]
+    informant_last_name  = doc.document["informant_last_name"]
+    informant_relationship = doc.document["informant_relationship"]
+    informant_phone_number = doc.document["informant_phone_number"]
+    informant_address_one = doc.document["informant_address_one"]
+    informant_address_two = doc.document["informant_address_two"]
+
+
+    updated_at = doc.document["updated_at"].to_date rescue doc.document["updated_at"]
+    created_at = doc.document["created_at"].to_date rescue doc.document["created_at"]
+
+    mysql_core_person_record = client.query("SELECT * FROM core_person WHERE document_id = '#{document_id}' LIMIT 1").each(:as => :hash)
+    unless mysql_core_person_record.blank?
+      person_id = mysql_core_person_record.last["person_id"]
+
+      update_person_birth_details_statement = "UPDATE person_birth_details SET place_of_birth = '#{place_of_birth}',
+        birth_location_id = '#{birth_location_id}', other_birth_location = '#{other_birth_location}', birth_weight = '#{birth_weight}', type_of_birth = '#{type_of_birth}',
+        parents_married_to_each_other = '#{parents_married_to_each_other}', date_of_marriage = '#{date_of_marriage}', gestation_at_birth = '#{gestation_at_birth}', number_of_prenatal_visits = '#{number_of_prenatal_visits}',
+        month_prenatal_care_started = '#{month_prenatal_care_started}', mode_of_delivery_id = '#{mode_of_delivery_id}', number_of_children_born_alive_inclusive = '#{number_of_children_born_alive_inclusive}',
+        number_of_children_born_still_alive = '#{number_of_children_born_still_alive}', level_of_education_id = '#{level_of_education_id}', district_id_number = '#{district_id_number}',
+        national_serial_number = '#{national_serial_number}', court_order_attached = '#{court_order_attached}', parents_signed = '', acknowledgement_of_receipt_date = '#{acknowledgement_of_receipt_date}',
+        facility_serial_number = '#{facility_serial_number}', adoption_court_order = '#{adoption_court_order}', birth_registration_type_id = '#{birth_registration_type_id}',
+        location_created_at = '#{location_created_at}', updated_at = '#{updated_at}'
+      WHERE person_id = '#{person_id}'"
+      #parents_signed field is missing in person_birth_details table
+      client.query(update_person_birth_details_statement)
     end
   end
 
