@@ -18,5 +18,5 @@ Follow the instructions below on how to setup the application.
 
 * cp config/db_mapping.yml.example config/db_mapping.yml
 
-* Run the API by running _couch_tap bin/couch-mysql.rb _ while in the root directory of the application
+* Run the API by running **couch_tap bin/couch-mysql.rb ** while in the root directory of the application
 
