@@ -1,24 +1,22 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Follow the instructions below on how to setup the application.
 
-Things you may want to cover:
+* Ruby version 2.2.3
 
-* Ruby version
+* git clone https://github.com/BaobabHealthTrust/data_listener.git
 
-* System dependencies
+* navigate into the application folder
 
-* Configuration
+* git checkout ebrs
 
-* Database creation
+* bundle install
 
-* Database initialization
+* cp config/couch_mysql.yml.example config/couch_mysql.yml
 
-* How to run the test suite
+* Open config/couch_mysql.yml and edit the file to match your couch and MySQL settings
 
-* Services (job queues, cache servers, search engines, etc.)
+* cp config/db_mapping.yml.example config/db_mapping.yml
 
-* Deployment instructions
+* Run the API by running _couch_tap bin/couch-mysql.rb _ while in the root directory of the application
 
-* ...
